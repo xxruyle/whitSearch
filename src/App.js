@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import WHITAKER from './services/whitWord.json'
+import {useState} from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const Search = () => { 
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const handleSearchChange = (event) => { 
+    setSearchTerm(event.target.value)
+  }
+
+  return ( 
+    <div>
+      <form>
+        <input type="text" placeholder="Search..." onChange={handleSearchChange}/>
+      </form>
+
+    {WHITAKER.filter((val) => {
+      if (searchTerm == "") {
+        return null 
+      } else if (val.word.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return val 
+      }
+    }).map((val, key) => {
+      return (
+        <div key={key}>
+          <ul>
+            {val.word}
+            <li>
+              {val.definition.map((def) => {
+                return (
+                  <div>
+                    {def}
+                  </div>
+                )
+              })}
+            </li>
+          </ul>
+        </div>
+      )
+    })}
     </div>
-  );
+  )
+}
+
+
+
+const App = () => { 
+
+  return (
+    <div>
+      <Search /> 
+    </div>
+
+  )
 }
 
 export default App;
